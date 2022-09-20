@@ -17,9 +17,9 @@ public class OjbetoEnviaEmail {
 	private String senha = "izydsmcgxbaqnaqf";
 	
 	private String listaDestinatarios = "";
-	private String nomeRemetente = "Igor Santos 😎 - Aluno do curso Jdev Treinamento";
-	private String assuntoEmail = "Chegou o e-mail enviado com Java 😀";
-	private String textoEmail = "Olá programador você acabou de receber um E-mail enviado com Java, do curso Formação Java Web do Alex";
+	private String nomeRemetente = "";
+	private String assuntoEmail = "";
+	private String textoEmail = "";
 	
 	public OjbetoEnviaEmail(String listaDestinatarios, String nomeRemetente, String assuntoEmail, String textoEmail) {
 		this.listaDestinatarios = listaDestinatarios;
@@ -29,7 +29,7 @@ public class OjbetoEnviaEmail {
 	}
 	
 	
-	public void enviarEmail() {
+	public void enviarEmail(boolean envioHtml) {
 		
 		/* Olhe as configurações do smtp do seu email */
 		/*Email do gmail criado: minhacontadetestes.developer@gmail.com - senha: 01030506 */
@@ -61,7 +61,12 @@ public class OjbetoEnviaEmail {
 			message.setFrom(new InternetAddress(userName, nomeRemetente));/*Quem esta enviando*/
 			message.setRecipients(Message.RecipientType.TO, toUser);/*E-mail de destino*/
 			message.setSubject(assuntoEmail);/*Assunto do E-mail*/
+			
+			if(envioHtml) {
+				message.setContent(textoEmail, "text/html; charset=utf-8");
+			}else {
 			message.setText(textoEmail);/*Corpo do E-mail*/
+			}
 			
 			Transport.send(message);
 			
