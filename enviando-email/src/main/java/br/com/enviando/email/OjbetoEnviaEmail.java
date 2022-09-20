@@ -88,6 +88,9 @@ public class OjbetoEnviaEmail {
 
 	}
 
+	
+	
+	
 	/*
 	 * Esse metodo simula o PDF ou arquivos que podem ser enviador por anexo voce
 	 * pode pegar arquivos no seu banco de dados, base64, byte[], Stream de aqruivos
