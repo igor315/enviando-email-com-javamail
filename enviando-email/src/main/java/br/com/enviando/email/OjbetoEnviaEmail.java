@@ -145,10 +145,10 @@ public class OjbetoEnviaEmail {
 			}
 
 			List<FileInputStream> arquivos = new ArrayList<FileInputStream>();
-			arquivos.add(simuladordePDF());
-			arquivos.add(simuladordePDF());
-			arquivos.add(simuladordePDF());
-			arquivos.add(simuladordePDF());
+			arquivos.add(simuladordePDF());/*poderia ser um certificado*/
+			arquivos.add(simuladordePDF());/*poderia ser uma nota fiscal*/
+			arquivos.add(simuladordePDF());/*poderia ser um documento de texto */
+			arquivos.add(simuladordePDF());/*poderia ser uma imagem*/
 
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(corpoEmail);
