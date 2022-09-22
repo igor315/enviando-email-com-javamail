@@ -3,6 +3,8 @@ package br.com.enviando.email;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -84,8 +86,7 @@ public class OjbetoEnviaEmail {
 			} else {
 				message.setText(textoEmail);/* Corpo do E-mail */
 			}
-			
-			
+
 			Transport.send(message);
 
 		} catch (Exception e) {
@@ -94,9 +95,7 @@ public class OjbetoEnviaEmail {
 
 	}
 
-	
-	
-	/*Envia em com anexo*/
+	/* Envia em com anexo */
 	public void enviarEmailAnexo(boolean envioHtml) {
 
 		/* Olhe as configurações do smtp do seu email */
@@ -135,31 +134,46 @@ public class OjbetoEnviaEmail {
 			message.setFrom(new InternetAddress(userName, nomeRemetente));/* Quem esta enviando */
 			message.setRecipients(Message.RecipientType.TO, toUser);/* E-mail de destino */
 			message.setSubject(assuntoEmail);/* Assunto do E-mail */
-			
-			
-			/*Parte 1 do e-mail e o texto e a descricao do email*/
+
+			/* Parte 1 do e-mail e o texto e a descricao do email */
 			MimeBodyPart corpoEmail = new MimeBodyPart();
-			
-			
+
 			if (envioHtml) {
 				corpoEmail.setContent(textoEmail, "text/html; charset=utf-8");
 			} else {
 				corpoEmail.setText(textoEmail);/* Corpo do E-mail */
 			}
 
-			
-			/*Parte 2 do e-mail que sao os anexos em PDF*/
-			MimeBodyPart anexoEmail = new MimeBodyPart();
-			
-			/*Onde é passado o simuladorDePDF voce passa o seu arquivo gravado no banco de dados */
-			anexoEmail.setDataHandler(new DataHandler(new ByteArrayDataSource(simuladordePDF(), "application/pdf")));
-			anexoEmail.setFileName("anexoemail.pdf");
-			
-			/*Junta as duas partes do e-mail*/
+			List<FileInputStream> arquivos = new ArrayList<FileInputStream>();
+			arquivos.add(simuladordePDF());
+			arquivos.add(simuladordePDF());
+			arquivos.add(simuladordePDF());
+			arquivos.add(simuladordePDF());
+
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(corpoEmail);
-			multipart.addBodyPart(anexoEmail);
+
 			
+			int index = 0;
+			for (FileInputStream fileInputStream : arquivos) {
+
+				/* Parte 2 do e-mail que sao os anexos em PDF */
+				MimeBodyPart anexoEmail = new MimeBodyPart();
+
+				/*
+				 * Onde é passado o simuladorDePDF voce passa o seu arquivo gravado no banco de
+				 * dados
+				 */
+				anexoEmail.setDataHandler(new DataHandler(new ByteArrayDataSource(fileInputStream, "application/pdf")));
+				anexoEmail.setFileName("anexoemail.pdf"+index+".pdf");
+
+				/* Junta as duas partes do e-mail */
+
+				multipart.addBodyPart(anexoEmail);
+
+				index++;
+			}
+
 			message.setContent(multipart);
 
 			Transport.send(message);
@@ -169,8 +183,7 @@ public class OjbetoEnviaEmail {
 		}
 
 	}
-	
-	
+
 	/*
 	 * Esse metodo simula o PDF ou arquivos que podem ser enviador por anexo voce
 	 * pode pegar arquivos no seu banco de dados, base64, byte[], Stream de aqruivos
