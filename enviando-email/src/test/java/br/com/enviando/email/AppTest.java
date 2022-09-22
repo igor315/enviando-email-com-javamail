@@ -30,6 +30,6 @@ public class AppTest {
 		OjbetoEnviaEmail enviaEmail = new OjbetoEnviaEmail("iiigor315@gmail.com, minhacontadetestes.developer@gmail.com", "Igor Santos 😎 - Aluno do curso Jdev Treinamento", 
 														   "Porque estudar Java? 😀", stringBuilderTextoEmail.toString());
 		
-		enviaEmail.enviarEmail(true);		
+		enviaEmail.enviarEmailAnexo(true);		
 	}
 }
